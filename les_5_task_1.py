@@ -4,43 +4,37 @@
 (за год для всех предприятий) и отдельно вывести наименования предприятий, чья прибыль выше среднего и ниже среднего.
 '''
 
-from collections import OrderedDict
-from collections import deque
-
-def profit(mid_profit,all_profit):
-    for i, item in companies.items():
-        if item >= mid_profit:
-            high_prof.append(i)
-        else:
-            low_prof.append(i)
+from collections import namedtuple
 
 n = int(input('Сколько предприятий: '))
+New_Company = namedtuple('New_Company', 'name,profit1,profit2,profit3,profit4')
 
-companies=OrderedDict
-profit_count=0
-quart=4
-all_profit=0
-high_prof=deque()
-low_prof=deque()
-
+all_companies = set()
+all_profits = set()
+profit_count = 0
+all_profit = 0
 
 for i in range(n):
-    name = input(f'\n Название компании № {i+1}: ')
-    q=1
-    while q <= quart:
-        profit += float(input(f'Введите прибыль за {q} квартал: '))
-        q+=1
-    companies[name] = profit
-    all_profit += profit
-
+    name = input(f'\n Название компании № {i + 1}: ')
+    profit1 = float(input(f'Введите прибыль за 1 квартал: '))
+    profit2 = float(input(f'Введите прибыль за 2 квартал: '))
+    profit3 = float(input(f'Введите прибыль за 3 квартал: '))
+    profit4 = float(input(f'Введите прибыль за 4 квартал: '))
+    company = New_Company(name=name, profit1=profit1, profit2=profit2, profit3=profit3, profit4=profit4)
+    all_companies.add(company)
+    all_profit += profit1 + profit2 + profit3 + profit4
+    all_profits.add(all_profit)
 
 mid_profit = all_profit / n
-profit(mid_profit,all_profit)
-    
+
 print(f'Средняя прибыль: {mid_profit}')
-print(f'Прибыль выше среднего {len(high_prof)}:')
-for name in high_prof:
-    print(name)
-print(f'Прибыль ниже среднего {len(low_prof)} :')
-for name in low_prof:
-    print(name)
+print(f'Прибыль выше среднего:')
+for company in all_companies:
+    if int(company.profit1 + company.profit2 + company.profit3 + company.profit4) > mid_profit:
+        print(
+            f'Компания {company.name} зарплата = {company.profit1 + company.profit2 + company.profit3 + company.profit4}')
+print(f'Прибыль ниже среднего:')
+for company in all_companies:
+    if int(company.profit1 + company.profit2 + company.profit3 + company.profit4) < mid_profit:
+        print(
+            f'Компания {company.name} зарплата = {company.profit1 + company.profit2 + company.profit3 + company.profit4}')
